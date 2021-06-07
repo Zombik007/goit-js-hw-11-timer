@@ -3,6 +3,9 @@ class CountdownTimer {
     this.selector = this.getEl(selector);
     this.targetDate = targetDate;
     this.timerInterval = null;
+
+    this.timeConversion();
+    this.elementsFilledTimeNumbers();
     this.timer();
   }
 
@@ -16,24 +19,35 @@ class CountdownTimer {
     return refs;
   }
 
+  timeDifference() {
+    let currentTime = new Date();
+    let time = this.targetDate - currentTime;
+    this.timeConversion(time);
+  }
+
+  timeConversion(time) {
+    const days = Math.floor(time / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    hours = hours <= 9 ? "0" + hours : hours;
+    let mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
+    mins = mins <= 9 ? "0" + mins : mins;
+    let secs = Math.floor((time % (1000 * 60)) / 1000);
+    secs = secs <= 9 ? "0" + secs : secs;
+    console.log(days, hours, mins, secs);
+    this.elementsFilledTimeNumbers(days, hours, mins, secs);
+  }
+
+  elementsFilledTimeNumbers(days, hours, mins, secs) {
+    this.selector.daysEl.textContent = days;
+    this.selector.hoursEl.textContent = hours;
+    this.selector.minsEl.textContent = mins;
+    this.selector.secsEl.textContent = secs;
+  }
+
   timer() {
+    this.timeDifference();
     this.timerInterval = setInterval(() => {
-      let currentTime = new Date();
-      let time = this.targetDate - currentTime;
-
-      const days = Math.floor(time / (1000 * 60 * 60 * 24));
-      let hours = Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      hours = hours <= 9 ? "0" + hours : hours;
-      let mins = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
-      mins = mins <= 9 ? "0" + mins : mins;
-      let secs = Math.floor((time % (1000 * 60)) / 1000);
-      secs = secs <= 9 ? "0" + secs : secs;
-
-      this.selector.daysEl.textContent = days;
-      this.selector.hoursEl.textContent = hours;
-      this.selector.minsEl.textContent = mins;
-
-      this.selector.secsEl.textContent = secs;
+      this.timeDifference();
     }, 1000);
   }
 }
