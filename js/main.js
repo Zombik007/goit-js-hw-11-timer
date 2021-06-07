@@ -33,7 +33,6 @@ class CountdownTimer {
     mins = mins <= 9 ? "0" + mins : mins;
     let secs = Math.floor((time % (1000 * 60)) / 1000);
     secs = secs <= 9 ? "0" + secs : secs;
-    console.log(days, hours, mins, secs);
     this.elementsFilledTimeNumbers(days, hours, mins, secs);
   }
 
